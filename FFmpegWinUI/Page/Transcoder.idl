@@ -1,0 +1,8 @@
+namespace FFmpegWinUI
+{
+    [default_interface]
+    runtimeclass Transcoder : Microsoft.UI.Xaml.Controls.Page
+    {
+        Transcoder();
+    }
+}
