@@ -4,6 +4,7 @@
 #include "Settings.g.cpp"
 #endif
 
+#include "winrt/Windows.Web.Http.Headers.h"
 #include "winrt/Windows.Storage.Pickers.h"
 #include "winrt/Windows.Storage.Streams.h"
 #include "winrt/Windows.Storage.h"
@@ -80,8 +81,7 @@ namespace winrt::FFmpegWinUI::implementation
             response.EnsureSuccessStatusCode();
 
             // 获取文件总大小(不能编译通过)
-            //auto contentLengthRef = response.Content().Headers().ContentLength();
-            //m_totalBytes = contentLengthRef ? *contentLengthRef : 0;
+            m_totalBytes = response.Content().Headers().ContentLength().GetUInt64();
             m_hasTotalSize = m_totalBytes > 0;
 
             // 创建目标文件

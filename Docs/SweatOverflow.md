@@ -31,3 +31,7 @@ else
 ```
 
 [参考博客](https://stackoverflow.com/questions/21097730/usage-of-ensuresuccessstatuscode-and-handling-of-httprequestexception-it-throws/)
+
+## 要使用将会返回“auto”的函数，必须首先定义此函数
+
+若要解决此问题，请包含其包含命名空间的标头。
