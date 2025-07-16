@@ -3,8 +3,7 @@
 FFmpeg 管理与命令，基于 WinUI 3 开发。提供直观的界面来配置和管理 FFmpeg，让 FFmpeg 的安装和使用变得简单。
 
 ## 截图
-
-![](./Docs\Img\FFmpegWinUIApp.png)
+<img src="Docs/Img/FFmpegWinUIApp.png"/>
 
 ## 鸣谢
 此项目部分代码源自优秀的开源项目
