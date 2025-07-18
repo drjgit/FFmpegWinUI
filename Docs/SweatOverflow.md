@@ -32,6 +32,13 @@ else
 
 [参考博客](https://stackoverflow.com/questions/21097730/usage-of-ensuresuccessstatuscode-and-handling-of-httprequestexception-it-throws/)
 
-## 要使用将会返回“auto”的函数，必须首先定义此函数
+## 错误提示："要使用将会返回“auto”的函数，必须首先定义此函数"
 
 若要解决此问题，请包含其包含命名空间的标头。
+
+## 如果当前操作的方法为协程实现的异步操作，那么当前函数的参数禁止传递引用
+
+❌：Windows::Foundation::IAsyncAction StartDownloadAsync(hstring& uri, hstring& fileName); //这是错误的操作，可能引发未知的异常
+
+
+

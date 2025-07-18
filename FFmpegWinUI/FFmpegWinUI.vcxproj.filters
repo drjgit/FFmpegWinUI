@@ -32,13 +32,22 @@
     <Midl Include="Page\Transcoder.idl">
       <Filter>Page</Filter>
     </Midl>
+    <Midl Include="FFmpegService\FFmpegService.idl">
+      <Filter>FFmpegService</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="FFmpegService\FFmpegService.cpp">
+      <Filter>FFmpegService</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="FFmpegService\FFmpegService.h">
+      <Filter>FFmpegService</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -70,6 +79,9 @@
     <Filter Include="Page">
       <UniqueIdentifier>{a9f727f4-3000-4214-84a6-45dac19fd9a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FFmpegService">
+      <UniqueIdentifier>{7eaf1b10-cff7-4de7-804e-a5d79c517931}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -82,5 +94,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis" />
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natstepfilter" />
   </ItemGroup>
 </Project>

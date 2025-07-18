@@ -108,6 +108,7 @@
     <Manifest Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FFmpegService\FFmpegService.h" />
     <ClInclude Include="Page\Home.xaml.h">
       <DependentUpon>Page\Home.xaml</DependentUpon>
     </ClInclude>
@@ -137,6 +138,7 @@
     <Page Include="Page\Transcoder.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FFmpegService\FFmpegService.cpp" />
     <ClCompile Include="Page\Home.xaml.cpp">
       <DependentUpon>Page\Home.xaml</DependentUpon>
     </ClCompile>
@@ -161,6 +163,7 @@
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Midl Include="FFmpegService\FFmpegService.idl" />
     <Midl Include="MainWindow.idl">
       <SubType>Code</SubType>
       <DependentUpon>MainWindow.xaml</DependentUpon>

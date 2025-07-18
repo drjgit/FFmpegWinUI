@@ -1,0 +1,14 @@
+namespace FFmpegWinUI
+{
+    [default_interface]
+    runtimeclass FFmpegService
+    {
+        FFmpegService();
+        FFmpegService(Windows.System.DispatcherQueue dispatcher);
+        Windows.Foundation.IAsyncAction StartDownloadAsync(String url, String fileName);
+        //进度条事件
+        event Windows.Foundation.EventHandler<UInt32> ProgressChanged;
+        event Windows.Foundation.EventHandler<String> Completed;
+    }
+}
+
