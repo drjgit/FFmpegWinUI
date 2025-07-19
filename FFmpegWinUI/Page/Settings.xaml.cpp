@@ -37,6 +37,23 @@ namespace winrt::FFmpegWinUI::implementation
         return true;
     }
 
+    hstring FormatUnit(uint64_t bytes)
+    {
+        constexpr uint64_t KB = 1024;
+        constexpr uint64_t MB = KB * 1024;
+        constexpr uint64_t GB = MB * 1024;
+
+        wchar_t array[64] = { 0 };
+        if (bytes >= GB)
+            return to_hstring(bytes / GB);
+        else if (bytes >= MB)
+            return to_hstring(bytes / MB);
+        else if (bytes >= KB)
+            return to_hstring(bytes / KB);
+        else
+            return to_hstring(bytes);
+    }
+
     hstring FormatSpeed(double bytesPerSecond)
     {
         constexpr double KB = 1024;
@@ -71,21 +88,32 @@ namespace winrt::FFmpegWinUI::implementation
         Windows::System::DispatcherQueue dispatcher = Windows::System::DispatcherQueue::GetForCurrentThread();
         m_downloader = winrt::make<FFmpegService>(dispatcher);
         // ×¢²áÊÂ¼þ
-        m_downloader.ProgressChanged([weakThis = get_weak()](auto&&, uint32_t progress)
+        m_downloader.ProgressChanged([weakThis = get_weak()](auto&&, ProgressEventArgs args)
             {
                 if (auto self = weakThis.get())
                 {
-                    self->DownloadProgressBar().Value(progress);
-                    self->InfoTextBlock().Text(to_hstring(progress) + L"%");
+                    std::wstring textBlock;
+                    textBlock.append(FormatSpeed(args.Speed()));
+                    textBlock.append(L" - ");
+                    textBlock.append(FormatUnit(args.ReceivedBytes()));
+                    textBlock.append(L" / ");
+                    textBlock.append(FormatUnit(args.TotalBytes()));
+                    self->DownloadProgressBar().Value(args.Percentage());
+                    self->InfoTextBlock().Text(textBlock);
                 }
-
             });
 
-        m_downloader.Completed([weakThis = get_weak()](auto&&, hstring message)
+        m_downloader.StatusChanged([weakThis = get_weak()](auto&&, hstring message)
             {
                 if (auto self = weakThis.get())
                 {
                     self->StatusText().Text(message);
+                    if (message == L"Download complete")
+                    {
+                        self->DownloadFFmpegBtn().IsEnabled(true);
+                        self->ProgressPanel().Visibility(Visibility::Collapsed);
+                        self->DownloadProgressBar().Visibility(Visibility::Collapsed);
+                    }
                 }
             });
     }
@@ -137,32 +165,32 @@ namespace winrt::FFmpegWinUI::implementation
         }
     }
 
-	void Settings::OnDownloadFFmpeg(IInspectable const& sender, RoutedEventArgs const& e)
-	{
-        hstring uri(TEST_LINK);
+    void Settings::OnDownloadFFmpeg(IInspectable const& sender, RoutedEventArgs const& e)
+    {
+        hstring uri(FFMPEG_DOWNLOAD_LINK);
         hstring fileName(L"ffmpeg-release-essentials.zip");
 
         FileNameText().Text(fileName);
         DownloadFFmpegBtn().IsEnabled(false);
         ProgressGrid().Visibility(Visibility::Visible);
-        ErrorInfoBadge().Visibility(Visibility::Collapsed);
-        OpenFFmpegFolderBtn().Visibility(Visibility::Collapsed);
+        //ErrorInfoBadge().Visibility(Visibility::Collapsed);
+        //OpenFFmpegFolderBtn().Visibility(Visibility::Collapsed);
 
         m_downloader.StartDownloadAsync(uri, fileName);
-	}
+    }
 
-	void Settings::OnSelectFFmpegPath(IInspectable const& sender, RoutedEventArgs const& e)
-	{
+    void Settings::OnSelectFFmpegPath(IInspectable const& sender, RoutedEventArgs const& e)
+    {
         openFFmpegFolder();
-	}
-
-	void Settings::OnWingetInstall(IInspectable const& sender, RoutedEventArgs const& e)
-	{
-
-	}
-
-	void Settings::OnOpenFFmpegFolder(IInspectable const& sender, RoutedEventArgs const& e)
-	{
-
-	}
+    }
+    
+    void Settings::OnWingetInstall(IInspectable const& sender, RoutedEventArgs const& e)
+    {
+    
+    }
+    
+    void Settings::OnOpenFFmpegFolder(IInspectable const& sender, RoutedEventArgs const& e)
+    {
+    
+    }
 }

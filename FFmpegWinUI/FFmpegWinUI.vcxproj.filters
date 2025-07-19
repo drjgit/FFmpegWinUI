@@ -42,10 +42,16 @@
     <ClCompile Include="FFmpegService\FFmpegService.cpp">
       <Filter>FFmpegService</Filter>
     </ClCompile>
+    <ClCompile Include="FFmpegService\ProgressEventArgs.cpp">
+      <Filter>FFmpegService</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="FFmpegService\FFmpegService.h">
+      <Filter>FFmpegService</Filter>
+    </ClInclude>
+    <ClInclude Include="FFmpegService\ProgressEventArgs.h">
       <Filter>FFmpegService</Filter>
     </ClInclude>
   </ItemGroup>

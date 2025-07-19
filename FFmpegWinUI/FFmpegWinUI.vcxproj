@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FFmpegService\FFmpegService.h" />
+    <ClInclude Include="FFmpegService\ProgressEventArgs.h" />
     <ClInclude Include="Page\Home.xaml.h">
       <DependentUpon>Page\Home.xaml</DependentUpon>
     </ClInclude>
@@ -139,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FFmpegService\FFmpegService.cpp" />
+    <ClCompile Include="FFmpegService\ProgressEventArgs.cpp" />
     <ClCompile Include="Page\Home.xaml.cpp">
       <DependentUpon>Page\Home.xaml</DependentUpon>
     </ClCompile>

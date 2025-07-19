@@ -97,11 +97,8 @@
                         <TextBlock x:Name="FileNameText" 
                            Style="{StaticResource CaptionTextBlockStyle}" 
                            VerticalAlignment="Center"/>
-                        <StackPanel Orientation="Horizontal" Spacing="8">
+                        <StackPanel x:Name="ProgressPanel" Orientation="Horizontal" Spacing="8">
                             <ProgressRing IsActive="True" Width="16" Height="16"/>
-                            <TextBlock x:Name="SpeedText" 
-                                   Style="{StaticResource CaptionTextBlockStyle}"
-                                   VerticalAlignment="Center"/>
                             <TextBlock x:Name="InfoTextBlock"
                                    Style="{StaticResource CaptionTextBlockStyle}"
                                    VerticalAlignment="Center"/>

@@ -23,8 +23,8 @@ namespace winrt::FFmpegWinUI::implementation
     }
 
     // 导航菜单项选择变化的事件
-	void MainPage::onMainNaviSelectionChanged(NavigationView const& sender, NavigationViewSelectionChangedEventArgs const& args)
-	{
+    void MainPage::onMainNaviSelectionChanged(NavigationView const& sender, NavigationViewSelectionChangedEventArgs const& args)
+    {
         if (auto selectedItem = args.SelectedItem().try_as<NavigationViewItem>())
         {
             auto tag = selectedItem.Tag().try_as<winrt::hstring>();
@@ -43,7 +43,7 @@ namespace winrt::FFmpegWinUI::implementation
                 contentFrame().Navigate(xaml_typename<Transcoder>());
             }
         }
-	}
+    }
 }
 
 

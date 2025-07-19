@@ -11,17 +11,17 @@ namespace winrt::FFmpegWinUI::implementation
 
         winrt::Windows::Foundation::IAsyncAction StartDownloadAsync(winrt::hstring url, winrt::hstring fileName);
 
-        void RaiseProgress(uint32_t progress);
-        void RaiseCompleted(winrt::hstring message);
+        void UpdateProgress(winrt::FFmpegWinUI::ProgressEventArgs& args);
+        void UpdateStatus(winrt::hstring status);
 
-        winrt::event_token ProgressChanged(winrt::Windows::Foundation::EventHandler<uint32_t> const& handler);
+        winrt::event_token ProgressChanged(winrt::Windows::Foundation::EventHandler<winrt::FFmpegWinUI::ProgressEventArgs> const& handler);
         void ProgressChanged(winrt::event_token const& token) noexcept;
 
-        winrt::event_token Completed(winrt::Windows::Foundation::EventHandler<hstring> const& handler);
-        void Completed(winrt::event_token const& token) noexcept;
+        winrt::event_token StatusChanged(winrt::Windows::Foundation::EventHandler<hstring> const& handler);
+        void StatusChanged(winrt::event_token const& token) noexcept;
 
-        winrt::event<Windows::Foundation::EventHandler<uint32_t>> m_progressChanged;
-        winrt::event<Windows::Foundation::EventHandler<hstring>> m_completed;
+        winrt::event<Windows::Foundation::EventHandler<winrt::FFmpegWinUI::ProgressEventArgs>> m_progressChanged;
+        winrt::event<Windows::Foundation::EventHandler<hstring>> m_statusChanged;
         winrt::Windows::System::DispatcherQueue m_dispatcher{ nullptr };
         std::atomic<bool> m_isCanceled;
     };
