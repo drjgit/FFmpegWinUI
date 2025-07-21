@@ -144,14 +144,15 @@ namespace winrt::FFmpegWinUI::implementation
             // 更新UI
             FFmpegPathBox().Text(path);
             // 检查路径
-            if (IsValidPath(path))
+            if (co_await m_downloader.CheckFFmpegExistsAsync(path))
             {
                 // 保存数据
                 winrt::Windows::Storage::ApplicationData::Current().LocalSettings().Values().Insert(FFMPEG_BIN_PATH,
                     winrt::box_value(path));
 
+                hstring version = co_await m_downloader.GetFFmpegVersionAsync(path);
                 // 更新 InfoBar
-                StatusInfoBar().Message(L"已找到 FFmpeg: {version}");
+                StatusInfoBar().Message(L"已找到 " + version);
                 StatusInfoBar().Severity(InfoBarSeverity::Success);
                 StatusInfoBar().IsOpen(true);
             }

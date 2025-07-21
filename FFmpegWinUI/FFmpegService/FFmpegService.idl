@@ -17,6 +17,8 @@ namespace FFmpegWinUI
         FFmpegService();
         FFmpegService(Windows.System.DispatcherQueue dispatcher);
         Windows.Foundation.IAsyncAction StartDownloadAsync(String url, String fileName);
+        Windows.Foundation.IAsyncOperation<String> GetFFmpegVersionAsync(String filePath);
+        Windows.Foundation.IAsyncOperation<Boolean> CheckFFmpegExistsAsync(String filePath);
         //进度条事件
         event Windows.Foundation.EventHandler<FFmpegWinUI.ProgressEventArgs> ProgressChanged;
         event Windows.Foundation.EventHandler<String> StatusChanged;

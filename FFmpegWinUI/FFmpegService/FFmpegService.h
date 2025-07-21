@@ -10,6 +10,8 @@ namespace winrt::FFmpegWinUI::implementation
         FFmpegService(winrt::Windows::System::DispatcherQueue dispatcher);
 
         winrt::Windows::Foundation::IAsyncAction StartDownloadAsync(winrt::hstring url, winrt::hstring fileName);
+        winrt::Windows::Foundation::IAsyncOperation<hstring> GetFFmpegVersionAsync(winrt::hstring filePath);
+        winrt::Windows::Foundation::IAsyncOperation<bool> CheckFFmpegExistsAsync(winrt::hstring filePath);
 
         void UpdateProgress(winrt::FFmpegWinUI::ProgressEventArgs& args);
         void UpdateStatus(winrt::hstring status);

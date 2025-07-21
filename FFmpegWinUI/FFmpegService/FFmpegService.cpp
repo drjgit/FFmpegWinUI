@@ -16,7 +16,6 @@ using namespace Windows::Storage::Streams;
 using namespace Windows::Storage::Pickers;
 using namespace Windows::Storage;
 using namespace Windows::Web::Http;
-using namespace Windows::Foundation;
 
 namespace winrt::FFmpegWinUI::implementation
 {
@@ -101,6 +100,82 @@ namespace winrt::FFmpegWinUI::implementation
         catch (const std::exception& e)
         {
             UpdateStatus(winrt::to_hstring(e.what()));
+        }
+    }
+
+    winrt::Windows::Foundation::IAsyncOperation<hstring> FFmpegService::GetFFmpegVersionAsync(winrt::hstring filePath)
+    {   
+        // 创建管道，用于捕获子进程输出
+        SECURITY_ATTRIBUTES sa;
+        sa.nLength = sizeof(SECURITY_ATTRIBUTES);
+        sa.bInheritHandle = TRUE;
+        sa.lpSecurityDescriptor = nullptr;
+
+        HANDLE hRead, hWrite;
+        if (!CreatePipe(&hRead, &hWrite, &sa, 0))
+            co_return L"(CreatePipe)-Failed to get the version!";
+
+        // 确保写入端可被子进程继承
+        SetHandleInformation(hRead, HANDLE_FLAG_INHERIT, 0);
+
+        PROCESS_INFORMATION pi = {};
+        STARTUPINFOW si = {};
+        si.cb = sizeof(si);
+        si.dwFlags = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;
+        si.hStdOutput = hWrite;
+        si.hStdError = hWrite;
+        si.wShowWindow = SW_HIDE; // 隐藏窗口
+
+        // 构建命令行
+        std::wstring cmd = filePath.c_str();
+        cmd.append(L"\\ffmpeg.exe -version");
+        if (!CreateProcessW(nullptr, cmd.data(), nullptr, nullptr, TRUE, CREATE_NO_WINDOW, nullptr, nullptr, &si, &pi))
+        {
+            CloseHandle(hRead);
+            CloseHandle(hWrite);
+            co_return L"(CreateProcess)-Failed to get the version!";
+        }
+        CloseHandle(hWrite);
+        CloseHandle(pi.hThread);
+        // 读取输出
+        std::string result;
+        std::array<char, 256> buffer;
+        DWORD bytesRead = 0;
+        while (ReadFile(hRead, buffer.data(), buffer.size()-1, &bytesRead, nullptr) && bytesRead > 0)
+        {
+            buffer[bytesRead] = '\0';
+            result += buffer.data();
+        }
+
+        CloseHandle(hRead);
+        CloseHandle(pi.hProcess);
+
+        auto pos = result.find('\n');
+        if (pos != std::string::npos)
+        {
+            result.erase(result.begin() + pos - 1, result.end());
+            co_return to_hstring(result);
+        }
+        co_return L"The version number of ffmpeg was not found!";
+    }
+
+    winrt::Windows::Foundation::IAsyncOperation<bool> FFmpegService::CheckFFmpegExistsAsync(hstring filePath)
+    {
+        try
+        {
+            // 尝试获取文件
+            hstring ffmpegFile = filePath + L"\\ffmpeg.exe";
+            auto file = co_await StorageFile::GetFileFromPathAsync(ffmpegFile);
+            co_return true;
+        }
+        catch (hresult_error const& ex)
+        {
+            // 文件不存在会抛出异常
+            if (ex.code() == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND))
+            {
+                OutputDebugString(L"The file does not exist!");
+            }
+            co_return false;
         }
     }
 
